@@ -79,12 +79,21 @@ class FeatureExtractor(object):
 
         enso_anomaly = tas - enso_monthly_mean
 
-        enso_anomaly_rolled = np.roll(enso_anomaly, n_lookahead - 12,axis = 0)
+        #enso_anomaly_rolled = np.roll(enso_anomaly, 12 - n_lookahead ,axis = 0)
         # select valid range
-        enso_anomaly_rolled_valid = enso_anomaly_rolled[valid_range,:,:]
+        #enso_anomaly_rolled_valid = enso_anomaly_rolled[valid_range,:,:]
+        enso_anomaly_valid = enso_anomaly[valid_range,:,:]
         # reshape it into a matrix of a single column
-        X = enso_anomaly_rolled_valid.reshape(-1,n_lat*n_long)
+        #X = enso_anomaly_rolled_valid.reshape(-1,n_lat*n_long)
+        Xraw = np.hstack((enso_anomaly_valid.values.reshape(-1,n_lat*n_long),tas[valid_range,:,:].values.reshape(-1,n_lat*n_long)))
+        X = Xraw
+        #X = []
+        #for k in valid_range:
+        #    X.append(Xraw[k - 2:k + 1])
+        #X = np.array(X)
+        #eturn X
+
+        #print X.shape
 
         return X
 
-  
